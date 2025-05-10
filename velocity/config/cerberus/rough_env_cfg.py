@@ -23,10 +23,8 @@ class CerberusRoughEnvCfg(LocomotionVelocityRoughEnvCfg):
         
         self.scene.height_scanner.prim_path="{ENV_REGEX_NS}/Robot/base_link"
         self.scene.height_scanner.debug_vis=True
-        self.scene.height_scanner.pattern_cfg = patterns.GridPatternCfg(resolution=0.1, size=[1.6, 2.0], direction=[0.757575, 0.0, -0.757575])
-        self.scene.height_scanner.offset = RayCasterCfg.OffsetCfg(pos=(0.75, 0.0, 0.0))
-
-        #self.observations.policy.height_scan = None
+        self.scene.height_scanner.pattern_cfg = patterns.GridPatternCfg(resolution=0.1, size=[1.6, 1.2], direction=[0.0, 0.0, -1])
+        self.scene.height_scanner.offset = RayCasterCfg.OffsetCfg(pos=(0.0, 0.0, 20.0))
 
         #self.scene.imu.prim_path="{ENV_REGEX_NS}/Robot/base_link"
 
@@ -35,10 +33,9 @@ class CerberusRoughEnvCfg(LocomotionVelocityRoughEnvCfg):
         #self.scene.camera_vision.prim_path = "{ENV_REGEX_NS}/Robot/base_link/Camera"
         #self.scene.camera_vision.debug_vis=True
 
-        # scale down the terrains because the robot is small
         self.scene.terrain.terrain_generator.sub_terrains["boxes"].grid_height_range = (0.025, 0.1)
-        self.scene.terrain.terrain_generator.sub_terrains["random_rough"].noise_range = (0.01, 0.06)
-        self.scene.terrain.terrain_generator.sub_terrains["random_rough"].noise_step = 0.01
+        self.scene.terrain.terrain_generator.sub_terrains["random_rough"].noise_range = (0.02, 0.1)
+        self.scene.terrain.terrain_generator.sub_terrains["random_rough"].noise_step = 0.02
 
         # reduce action scale
         self.actions.joint_pos.scale = 0.25
@@ -63,10 +60,12 @@ class CerberusRoughEnvCfg(LocomotionVelocityRoughEnvCfg):
 
         # rewards
         self.rewards.feet_air_time.params["sensor_cfg"].body_names = ".*_foot"
-        self.rewards.feet_air_time.weight = 0.01
+        self.rewards.feet_air_time.weight = 0.05
         self.rewards.undesired_contacts = None
-        self.rewards.dof_torques_l2.weight = -0.0002
-        
+        self.rewards.dof_torques_l2.weight = -0.0002        
+        self.rewards.flat_orientation_l2.weight = -0.2
+        self.rewards.joint_deviation_l1.weight = -0.2
+
         self.rewards.track_lin_vel_xy_exp.weight = 1.5
         self.rewards.track_ang_vel_z_exp.weight = 0.75
 
