@@ -21,15 +21,14 @@ class CerberusFlatEnvCfg(CerberusRoughEnvCfg):
         
         self.rewards.joint_deviation_l1.weight = -0.2
         self.rewards.dof_pos_limits.weight = 1.0e-2
-        #self.actions.joint_pos.scale = 1.0
 
         # change terrain to flat
         self.scene.terrain.terrain_type = "plane"
         self.scene.terrain.terrain_generator = None
+        
         # no height scan
         self.scene.height_scanner = None
         self.observations.policy.height_scan = None
-        self.observations.policy.base_lin_vel = None
         
         # no terrain curriculum
         self.curriculum.terrain_levels = None

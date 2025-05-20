@@ -5,7 +5,7 @@ import math
 
 CERBERUS_CFG = ArticulationCfg(
     spawn=sim_utils.UsdFileCfg(
-        usd_path="/home/veg/IsaacLab/source/isaaclab_tasks/isaaclab_tasks/manager_based/locomotion/velocity/config/cerberus/cerberus2.usd",
+        usd_path="/home/veg/IsaacLab/source/isaaclab_tasks/isaaclab_tasks/manager_based/locomotion/velocity/config/cerberus/cerberus.usd",
         
         activate_contact_sensors=True,
 

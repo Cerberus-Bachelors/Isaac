@@ -22,20 +22,17 @@ class CerberusRoughEnvCfg(LocomotionVelocityRoughEnvCfg):
         self.scene.robot = CERBERUS_CFG.replace(prim_path="{ENV_REGEX_NS}/Robot")
         
         self.scene.height_scanner.prim_path="{ENV_REGEX_NS}/Robot/base_link"
+        self.scene.height_scanner.attach_yaw_only=True,
         self.scene.height_scanner.debug_vis=True
-        self.scene.height_scanner.pattern_cfg = patterns.GridPatternCfg(resolution=0.1, size=[1.6, 1.2], direction=[0.0, 0.0, -1])
-        self.scene.height_scanner.offset = RayCasterCfg.OffsetCfg(pos=(0.0, 0.0, 20.0))
+        #self.scene.height_scanner.pattern_cfg = patterns.GridPatternCfg(resolution=0.2, size=[0.8, 1.6], direction=[0.819157, 0, -0.57357])
+        self.scene.height_scanner.pattern_cfg = patterns.GridPatternCfg(resolution=0.2, size=[1.6, 0.8])
+        #self.scene.height_scanner.offset = RayCasterCfg.OffsetCfg(pos=(0.45, 0.0, 0.077))
 
-        #self.scene.imu.prim_path="{ENV_REGEX_NS}/Robot/base_link"
-
-        self.scene.camera_vision = None
-        self.observations.policy.image = None
-        #self.scene.camera_vision.prim_path = "{ENV_REGEX_NS}/Robot/base_link/Camera"
-        #self.scene.camera_vision.debug_vis=True
+        self.scene.imu.prim_path="{ENV_REGEX_NS}/Robot/base_link"
 
         self.scene.terrain.terrain_generator.sub_terrains["boxes"].grid_height_range = (0.025, 0.1)
-        self.scene.terrain.terrain_generator.sub_terrains["random_rough"].noise_range = (0.02, 0.1)
-        self.scene.terrain.terrain_generator.sub_terrains["random_rough"].noise_step = 0.02
+        self.scene.terrain.terrain_generator.sub_terrains["random_rough"].noise_range = (0.01, 0.06)
+        self.scene.terrain.terrain_generator.sub_terrains["random_rough"].noise_step = 0.01
 
         # reduce action scale
         self.actions.joint_pos.scale = 0.25
@@ -59,21 +56,25 @@ class CerberusRoughEnvCfg(LocomotionVelocityRoughEnvCfg):
         }
 
         # rewards
-        self.rewards.feet_air_time.params["sensor_cfg"].body_names = ".*_foot"
-        self.rewards.feet_air_time.weight = 0.05
-        self.rewards.undesired_contacts = None
-        self.rewards.dof_torques_l2.weight = -0.0002        
-        self.rewards.flat_orientation_l2.weight = -0.2
-        self.rewards.joint_deviation_l1.weight = -0.2
+        #self.rewards.feet_air_time.params["sensor_cfg"].body_names = ".*_foot"
+        #self.rewards.feet_air_time.weight = 0.05
+        #self.rewards.undesired_contacts = None
+        
 
+        #self.rewards.dof_torques_l2.weight = -0.0002    
+        #self.rewards.track_lin_vel_xy_exp.weight = 1.5
+        #self.rewards.track_ang_vel_z_exp.weight = 0.75
+
+        #self.rewards.dof_acc_l2.weight = -2.5e-7
+
+        self.rewards.feet_air_time.params["sensor_cfg"].body_names = ".*_foot"
+        self.rewards.feet_air_time.weight = 0.01
+        self.rewards.undesired_contacts = None
+        self.rewards.joint_deviation_l1.weight = -2e-5
+        self.rewards.dof_torques_l2.weight = -0.0002
         self.rewards.track_lin_vel_xy_exp.weight = 1.5
         self.rewards.track_ang_vel_z_exp.weight = 0.75
-
         self.rewards.dof_acc_l2.weight = -2.5e-7
-
-        self.rewards.track_lin_vel_xy_yaw_frame_exp = None
-        #self.rewards.track_lin_vel_xy_yaw_frame_exp.params["asset_cfg"].body_names="base_link"
-        #self.rewards.track_lin_vel_xy_yaw_frame_exp.weight = 1.5
 
         # terminations
         self.terminations.base_contact.params["sensor_cfg"].body_names = "base_link"
